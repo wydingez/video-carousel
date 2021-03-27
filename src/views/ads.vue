@@ -34,7 +34,7 @@
       @swiper="setThumbsSwiper"
       class="gallery-thumbs"
     >
-      <swiper-slide :style="{'background-image': 'url(' + v.url + '?vframe/jpg/offset/1)'}" v-for="(v, index) in videoList" :key="index" />
+      <swiper-slide :style="{'background-image': getVideoCover(v.url)}" v-for="(v, index) in videoList" :key="index" />
     </swiper>
   </div>
 </template>
@@ -78,18 +78,23 @@
         currentTime: 0
       }
     },
+
     components: {
       Swiper,
       SwiperSlide
     },
+
     mounted () {
       this.init()
     },
+
     methods: {
       setThumbsSwiper(swiper) {
         this.thumbsSwiper = swiper;
       },
+
       onSlideChange (slider) {
+        // 滑动页面时，停止除激活页面的视频以外的视频播放
         const {activeIndex} = slider
         const videos = Array.from(document.querySelectorAll('video'))
 
@@ -104,6 +109,7 @@
           }
         })
       },
+      
       init() {
         // 初始化广告视频页面
         this.loading = true
@@ -141,18 +147,25 @@
             })
           }, INTERVAL_AUTO_SAVE_TIME * 1000)
         }
-
-       
       },
+
       doCountTime(e) {
+        // 视频播放时更新播放时长
         this.viewDuration += e.target.currentTime - this.currentTime
         this.currentTime = e.target.currentTime
       },
+
       doPlay(e, index) {
+        // 播放视频时，统计点击次数，并设置当前视频的播放时间
         const videos = Array.from(document.querySelectorAll('video'))
 
         this.clickCount += 1
         this.currentTime = videos[index].currentTime
+      },
+
+      getVideoCover (url) {
+        // 获取视频封面
+        return `url(${url}?vframe/jpg/offset/1)`
       }
     }
   }
