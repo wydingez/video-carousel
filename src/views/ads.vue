@@ -109,7 +109,7 @@
           }
         })
       },
-      
+
       init() {
         // 初始化广告视频页面
         this.loading = true
@@ -139,7 +139,7 @@
               customer: communityCode,
               shop: areaId,
               click_count: this.clickCount,
-              click_count: Math.round(this.viewDuration)
+              view_duration: Math.round(this.viewDuration)
             }).then(({data}) => {
               if (data.success) {
                 console.warn(`[Video Actino Do Save Success]`)
