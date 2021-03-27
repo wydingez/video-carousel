@@ -6,7 +6,7 @@ export default createRouter({
   routes: [
     {
       path: '',
-      redirect: '/ads'
+      redirect: '/ads/hjhy/899521'
     },  {
       path: '/ads/:communityCode/:areaId',
       component: ads

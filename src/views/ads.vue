@@ -62,6 +62,8 @@
   // install Swiper modules
   SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Thumbs, Controller]);
 
+  const INTERVAL_AUTO_SAVE_TIME = 10
+
   // Import Swiper styles
   export default {
     data () {
@@ -124,7 +126,23 @@
             })
             this.loadingInstance.close()
           })
+
+          setInterval(() => {
+            // 10秒钟自动存储一次当前页面用户提交数据
+            addWatchMinute({
+              customer: communityCode,
+              shop: areaId,
+              click_count: this.clickCount,
+              click_count: Math.round(this.viewDuration)
+            }).then(({data}) => {
+              if (data.success) {
+                console.warn(`[Video Actino Do Save Success]`)
+              }
+            })
+          }, INTERVAL_AUTO_SAVE_TIME * 1000)
         }
+
+       
       },
       doCountTime(e) {
         this.viewDuration += e.target.currentTime - this.currentTime
