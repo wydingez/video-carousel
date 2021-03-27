@@ -34,7 +34,7 @@
       @swiper="setThumbsSwiper"
       class="gallery-thumbs"
     >
-      <swiper-slide :style="{'background-image': getVideoCover(v.url)}" v-for="(v, index) in videoList" :key="index" />
+      <swiper-slide :style="{'background-image': v.coverUrl}" v-for="(v, index) in videoList" :key="index" />
     </swiper>
   </div>
 </template>
@@ -117,16 +117,10 @@
         let {communityCode, areaId} = this.$route.params
         if (communityCode && areaId) {
           getAdsList({communityCode, areaId}).then(({data}) => {
-            console.log(data)
-            // this.loadingInstance.close()
-            this.videoList = [
-              { url: 'https://cdn.wyd94.top/m2.mp4' },
-              { url: 'https://cdn.wyd94.top/m3.mp4' },
-              { url: 'https://cdn.wyd94.top/m4.mp4' },
-              { url: 'https://cdn.wyd94.top/m5.mp4' },
-              { url: 'https://cdn.wyd94.top/m6.mp4' },
-              { url: 'https://cdn.wyd94.top/m7.mp4' }
-            ]
+            this.videoList = data.map((i, index) => ({
+              url: i.downloadUrl,
+              coverUrl: `url(/images/m${index + 2}.jpg)`
+            }))
             this.$nextTick(() => {
               this.ready = false
             })
@@ -161,11 +155,6 @@
 
         this.clickCount += 1
         this.currentTime = videos[index].currentTime
-      },
-
-      getVideoCover (url) {
-        // 获取视频封面
-        return `url(${url}?vframe/jpg/offset/1)`
       }
     }
   }
