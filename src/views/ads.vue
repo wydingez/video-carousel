@@ -73,7 +73,9 @@
         thumbsSwiper: null,
         videoList: [],
         ready: true,
+        lastClickCount: 0,
         clickCount: 0,
+        lastViewDuration: 0,
         viewDuration: 0,
         currentTime: 0
       }
@@ -129,11 +131,16 @@
 
           setInterval(() => {
             // 10秒钟自动存储一次当前页面用户提交数据
+            let deltaClickCount = this.clickCount - this.lastClickCount
+            let deltaVidewDuration = this.viewDuration - this.lastViewDuration
+
+            this.lastClickCount = this.clickCount
+            this.lastViewDuration = this.viewDuration
             addWatchMinute({
               customer: communityCode,
               shop: areaId,
-              click_count: this.clickCount,
-              view_duration: Math.round(this.viewDuration)
+              click_count: deltaClickCount,
+              view_duration: Math.round(deltaVidewDuration)
             }).then(({data}) => {
               if (data.success) {
                 console.warn(`[Video Actino Do Save Success]`)
