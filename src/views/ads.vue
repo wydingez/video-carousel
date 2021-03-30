@@ -121,7 +121,7 @@
           getAdsList({communityCode, areaId}).then(({data}) => {
             this.videoList = data.map((i, index) => ({
               url: i.downloadUrl,
-              coverUrl: `url(/images/m${index + 2}.jpg)`
+              coverUrl: i.imgUrl
             }))
             this.$nextTick(() => {
               this.ready = false
